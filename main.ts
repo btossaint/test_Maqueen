@@ -17,11 +17,14 @@ function drive(speed: number) {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, speed)
 }
 
+function sound() {
+    soundExpression.InterpolationEffect.ArpeggioRisingMajor
+}
+
 while (true) {
     drive(200)
-    if (maqueen.Ultrasonic(20)) {
+    while (maqueen.Ultrasonic(0) < 20) {
+        music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 5000, 0, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
         turnleft(200)
-        stop()
     }
-    
 }
