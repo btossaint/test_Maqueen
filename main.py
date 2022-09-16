@@ -8,63 +8,53 @@ def stop():
 def sound():
     soundExpression.InterpolationEffect.ARPEGGIO_RISING_MAJOR
 
-def drive(speed: number):
+def drive(speed: number, time):
+    strip.show_color(neopixel.colors(NeoPixelColors.RED)) #vooruit
     maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, speed)
     maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, speed)
+    basic.pause(time)
 
-def turnleft(speed2: number):
-    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, speed2)
-    maqueen.motor_stop(maqueen.Motors.M1)
-    
+def turnleft(speed: number, time):
+    strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #links
+    maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_ON)
+    maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_OFF)
+    basic.pause(500)
+    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, 0)
+    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, speed)
+    basic.pause(time)
+
+def turnright(speed: number, time):
+    strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
+    maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_OFF)
+    maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_ON)
+    basic.pause(500)
+    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, speed)
+    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 0)
+    basic.pause(time)
+
+def backwards(speed: number, time):
+    strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
+    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CCW, speed)
+    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CCW, speed)
+    basic.pause(time)
+
+def backwardsright(speed: number, time):
+    strip.show_color(neopixel.colors(NeoPixelColors.YELLOW)) #achteruitrechts
+    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CCW, speed)
+    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CCW, 0)
+    basic.pause(time)
+
 def on_forever():
     basic.show_number(maqueen.ultrasonic(PingUnit.CENTIMETERS))
 
-def on_forever2():
-    strip.show_color(neopixel.colors(NeoPixelColors.RED))
-    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, 255)
-    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 255)
-    basic.pause(1000)
-    strip.show_color(neopixel.colors(NeoPixelColors.BLUE))
-    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, 255)
-    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 0)
-    basic.pause(1000)
-    strip.show_color(neopixel.colors(NeoPixelColors.GREEN))
-    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, 0)
-    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 255)
-    basic.pause(1000)
-    strip.show_color(neopixel.colors(NeoPixelColors.PURPLE))
-    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CCW, 255)
-    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CCW, 255)
-    basic.pause(1000)
-    strip.show_color(neopixel.colors(NeoPixelColors.YELLOW))
-    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CCW, 255)
-    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CCW, 0)
-    basic.pause(1000)
-
-
-def on_forever3():
-    maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_OFF)
-    maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_ON)
-    music.play_tone(494, music.beat(BeatFraction.WHOLE))
-    basic.pause(500)
-    maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_ON)
-    maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_OFF)
-    music.play_tone(262, music.beat(BeatFraction.WHOLE))
-    basic.pause(500)
-
-while True:
-    drive(200)
-    while maqueen.ultrasonic(0) < 20:
-        music.play_sound_effect(music.create_sound_effect(WaveShape.SINE,
-                5000,
-                0,
-                255,
-                0,
-                500,
-                SoundExpressionEffect.NONE,
-                InterpolationCurve.LINEAR),
-            SoundExpressionPlayMode.UNTIL_DONE)
-        turnleft(200)
-    basic.forever(on_forever)
-    basic.forever(on_forever2)
-    basic.forever(on_forever3)
+while True:    
+    drive(100,10)
+    while maqueen.ultrasonic(0) < 50 or (maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0):
+        if maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 1 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
+            stop()
+            turnleft(255,1000)
+        elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 1:
+            stop()
+            turnright(255,1000)
+        
+    
