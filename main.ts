@@ -28,6 +28,17 @@ function turnleft(speed: number, time: number) {
     basic.pause(time)
 }
 
+function turnleft90() {
+    strip.showColor(neopixel.colors(NeoPixelColors.Green))
+    // links
+    maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
+    maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
+    basic.pause(500)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 0)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 220)
+    basic.pause(1040)
+}
+
 function turnright(speed: number, time: number) {
     strip.showColor(neopixel.colors(NeoPixelColors.Green))
     // rechts
@@ -37,6 +48,17 @@ function turnright(speed: number, time: number) {
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, speed)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 0)
     basic.pause(time)
+}
+
+function turnright90() {
+    strip.showColor(neopixel.colors(NeoPixelColors.Green))
+    // rechts
+    maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
+    maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOn)
+    basic.pause(500)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 220)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 0)
+    basic.pause(1040)
 }
 
 function backwards(speed: number, time: number) {
@@ -61,14 +83,21 @@ function on_forever() {
 
 while (true) {
     drive(100, 10)
-    while (maqueen.Ultrasonic(0) < 50 || (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 || maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0)) {
-        if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 1 || maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
+    /** 
+    while maqueen.ultrasonic(0) < 50 or (maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0):
+        if maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 1 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
             stop()
-            turnleft(255, 1000)
-        } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 || maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 1) {
+            turnleft(255,1000)
+        elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 1:
             stop()
-            turnright(255, 1000)
-        }
-        
-    }
+            turnright(255,1000)
+    
+ */
+    turnleft90()
+    stop()
+    basic.pause(5000)
+    drive(220, 100)
+    turnright90()
+    stop()
+    basic.pause(5000)
 }

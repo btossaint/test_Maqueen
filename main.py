@@ -23,6 +23,15 @@ def turnleft(speed: number, time):
     maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, speed)
     basic.pause(time)
 
+def turnleft90():
+    strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #links
+    maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_ON)
+    maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_OFF)
+    basic.pause(500)
+    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, 0)
+    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 220)
+    basic.pause(1040)
+
 def turnright(speed: number, time):
     strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
     maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_OFF)
@@ -31,6 +40,15 @@ def turnright(speed: number, time):
     maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, speed)
     maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 0)
     basic.pause(time)
+
+def turnright90():
+    strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
+    maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_OFF)
+    maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_ON)
+    basic.pause(500)
+    maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, 220)
+    maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, 0)
+    basic.pause(1040)
 
 def backwards(speed: number, time):
     strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
@@ -49,6 +67,7 @@ def on_forever():
 
 while True:    
     drive(100,10)
+    '''
     while maqueen.ultrasonic(0) < 50 or (maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0):
         if maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 1 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
             stop()
@@ -56,5 +75,12 @@ while True:
         elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 1:
             stop()
             turnright(255,1000)
-        
+    '''
+    turnleft90()
+    stop()
+    basic.pause(5000)   
+    drive(220,100) 
+    turnright90()
+    stop()
+    basic.pause(5000)
     
