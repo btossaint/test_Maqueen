@@ -1,5 +1,3 @@
-basic.showIcon(IconNames.Heart)
-let strip = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
 function stop() {
     maqueen.motorStop(maqueen.Motors.M1)
     maqueen.motorStop(maqueen.Motors.M2)
@@ -22,7 +20,7 @@ function turnleft(speed: number, time: number) {
     // links
     maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
     maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
-    basic.pause(500)
+    // basic.pause(500)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 0)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, speed)
     basic.pause(time)
@@ -44,7 +42,7 @@ function turnright(speed: number, time: number) {
     // rechts
     maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
     maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOn)
-    basic.pause(500)
+    // basic.pause(500)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, speed)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 0)
     basic.pause(time)
@@ -83,16 +81,20 @@ function followline(speed: number) {
         turnleft(speed, 0)
     } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 1 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
         turnright(speed, 0)
-    } else {
-        backwards(speed, 0)
     }
     
 }
 
+// else:
+//      backwards(speed, 0)    
 function on_forever() {
     basic.showNumber(maqueen.Ultrasonic(PingUnit.Centimeters))
 }
 
-while (true) {
+//  --- main program ---
+basic.showIcon(IconNames.Heart)
+let strip = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
+let doorgaan = true
+while (doorgaan) {
     followline(100)
 }
