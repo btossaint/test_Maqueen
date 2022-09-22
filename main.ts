@@ -63,7 +63,6 @@ function turnright90() {
 
 function backwards(speed: number, time: number) {
     strip.showColor(neopixel.colors(NeoPixelColors.Green))
-    // rechts
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, speed)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, speed)
     basic.pause(time)
@@ -77,27 +76,23 @@ function backwardsright(speed: number, time: number) {
     basic.pause(time)
 }
 
+function followline(speed: number) {
+    if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
+        drive(speed, 0)
+    } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 0 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 1) {
+        turnleft(speed, 0)
+    } else if (maqueen.readPatrol(maqueen.Patrol.PatrolLeft) == 1 && maqueen.readPatrol(maqueen.Patrol.PatrolRight) == 0) {
+        turnright(speed, 0)
+    } else {
+        backwards(speed, 0)
+    }
+    
+}
+
 function on_forever() {
     basic.showNumber(maqueen.Ultrasonic(PingUnit.Centimeters))
 }
 
 while (true) {
-    drive(100, 10)
-    /** 
-    while maqueen.ultrasonic(0) < 50 or (maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0):
-        if maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 1 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
-            stop()
-            turnleft(255,1000)
-        elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 1:
-            stop()
-            turnright(255,1000)
-    
- */
-    turnleft90()
-    stop()
-    basic.pause(5000)
-    drive(220, 100)
-    turnright90()
-    stop()
-    basic.pause(5000)
+    followline(100)
 }

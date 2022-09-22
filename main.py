@@ -51,7 +51,7 @@ def turnright90():
     basic.pause(1040)
 
 def backwards(speed: number, time):
-    strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
+    strip.show_color(neopixel.colors(NeoPixelColors.GREEN))
     maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CCW, speed)
     maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CCW, speed)
     basic.pause(time)
@@ -62,25 +62,19 @@ def backwardsright(speed: number, time):
     maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CCW, 0)
     basic.pause(time)
 
+def followline(speed):    
+    if maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 and maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
+        drive(speed,0)
+    elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 and maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 1:
+        turnleft(speed,0)
+    elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 1 and maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
+        turnright(speed,0)
+    else:
+         backwards(speed, 0)    
+
 def on_forever():
     basic.show_number(maqueen.ultrasonic(PingUnit.CENTIMETERS))
 
 while True:    
-    drive(100,10)
-    '''
-    while maqueen.ultrasonic(0) < 50 or (maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0):
-        if maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 1 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 0:
-            stop()
-            turnleft(255,1000)
-        elif maqueen.read_patrol(maqueen.Patrol.PATROL_LEFT) == 0 or maqueen.read_patrol(maqueen.Patrol.PATROL_RIGHT) == 1:
-            stop()
-            turnright(255,1000)
-    '''
-    turnleft90()
-    stop()
-    basic.pause(5000)   
-    drive(220,100) 
-    turnright90()
-    stop()
-    basic.pause(5000)
+    followline(100)
     
