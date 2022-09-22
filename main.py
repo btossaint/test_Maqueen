@@ -1,4 +1,5 @@
 def stop():
+    basic.show_string("S")
     maqueen.motor_stop(maqueen.Motors.M1)
     maqueen.motor_stop(maqueen.Motors.M2)
 
@@ -6,12 +7,14 @@ def sound():
     soundExpression.InterpolationEffect.ARPEGGIO_RISING_MAJOR
 
 def drive(speed: number, time):
+    basic.show_string("D")
     strip.show_color(neopixel.colors(NeoPixelColors.RED)) #vooruit
     maqueen.motor_run(maqueen.Motors.M1, maqueen.Dir.CW, speed)
     maqueen.motor_run(maqueen.Motors.M2, maqueen.Dir.CW, speed)
     basic.pause(time)
 
 def turnleft(speed: number, time):
+    basic.show_string("<-")
     strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #links
     maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_ON)
     maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_OFF)
@@ -30,6 +33,7 @@ def turnleft90():
     basic.pause(1040)
 
 def turnright(speed: number, time):
+    basic.show_string("->")
     strip.show_color(neopixel.colors(NeoPixelColors.GREEN)) #rechts
     maqueen.write_led(maqueen.LED.LED_LEFT, maqueen.LEDswitch.TURN_OFF)
     maqueen.write_led(maqueen.LED.LED_RIGHT, maqueen.LEDswitch.TURN_ON)
@@ -73,7 +77,7 @@ def on_forever():
     basic.show_number(maqueen.ultrasonic(PingUnit.CENTIMETERS))
 
 # --- main program ---
-basic.show_icon(IconNames.HEART)
+basic.show_string("^")
 strip = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
 doorgaan = True
 

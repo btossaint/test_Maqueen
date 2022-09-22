@@ -1,4 +1,5 @@
 function stop() {
+    basic.showString("S")
     maqueen.motorStop(maqueen.Motors.M1)
     maqueen.motorStop(maqueen.Motors.M2)
 }
@@ -8,6 +9,7 @@ function sound() {
 }
 
 function drive(speed: number, time: number) {
+    basic.showString("D")
     strip.showColor(neopixel.colors(NeoPixelColors.Red))
     // vooruit
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, speed)
@@ -16,6 +18,7 @@ function drive(speed: number, time: number) {
 }
 
 function turnleft(speed: number, time: number) {
+    basic.showString("<-")
     strip.showColor(neopixel.colors(NeoPixelColors.Green))
     // links
     maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
@@ -38,6 +41,7 @@ function turnleft90() {
 }
 
 function turnright(speed: number, time: number) {
+    basic.showString("->")
     strip.showColor(neopixel.colors(NeoPixelColors.Green))
     // rechts
     maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
@@ -92,7 +96,7 @@ function on_forever() {
 }
 
 //  --- main program ---
-basic.showIcon(IconNames.Heart)
+basic.showString("^")
 let strip = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
 let doorgaan = true
 while (doorgaan) {
